@@ -1,19 +1,29 @@
 """Welcome User"""
 i={}
 l=[]
+bio={}
 def login():        #func login
     global i
     global ch
     global us
-    a=input("Enter your user id: ")
-    if a in i:
-        b=input("Enter password: ")
-        if i[a]==b:
-            ch,us=menu(a)  #menu()
+    for k in range(5):
+        a=input("Enter your user id: ")
+        if a in i:
+            while True:
+                b=input("Enter password: ")
+                if i[a]==b:
+                    us=a
+                    ch=menu(a)  #menu()
+                    return 2
+                    break
+                else:
+                    print("Try again")
+            break
         else:
-            print("Try again")
+            print("Wrong id, Try again")            #func login end
+            pass
     else:
-        print("Wrong id, Try again")            #func login end
+        print("Maximum limit reached")
 def account():              #func account
     global i
     global l
@@ -37,10 +47,12 @@ def account():              #func account
             e["Passw"]=d
             l.append(e)
             print("Welldone, Your account has been created")
-            ch,us=menu(c)
+            us=a
+            ch=menu(c)
             break                           #func account end
 def menu(x):                    #func menu 
     print("*"*50)
+    global l
     for i in l:
         if i["User_id"]==x:
             break
@@ -50,7 +62,7 @@ def menu(x):                    #func menu
     print()
     print("1. Edit your information \n2.Add biodata \n3.Change Password \n4. Exit")
     a=int(input("Pleace select your choice -> "))               #func menu end
-    return a,x
+    return a
 def edit(y):                    #func edit
     global l
     d=0
@@ -69,7 +81,7 @@ def edit(y):                    #func edit
             i["Name"]=c
             l[d]=i
         elif b=="PHONE NUMBER" or b=="NUMBER":
-            c=input("Enter new number-> ")
+            c=int(input("Enter new number-> "))
             i["Number"]=c
             l[d]=i
         elif b=="MAIL" or b=="EMAIL":
@@ -85,25 +97,65 @@ def edit(y):                    #func edit
         elif e=="N" or e=="NO":
             break
     print("Your information has beem successfully updated")     #func edit end
-def biodata():                  #func biodata
-    print(0)
+def biodata(y):                  #func biodata
+    global l
+    global bio
+    if y in bio:
+        print("Your biodata-> ",bio[y])
+        a=input("Do you want to add something? ")
+        a=a.upper()
+        if a=="Y" or a=="YES":
+            c=input("Enter changes (this will add in the end or your earlier biodata)\n=> ")
+            bio[y]=bio[y]+" "+c            
+    else:
+        b=input("Enter your biodata\n=> ")
+        bio[y]=b
+    print("Your updated bio data is-\n",bio[y])         #func biodata end
+def passch(x):                     #func change password
+    d=0
+    for i in l:
+        if i["User_id"]==x:
+            break
+        d+=1
+    while True:
+        a=input("Confirm password- ")
+        if a==i["Passw"]:
+            b=input("enter new password- ")
+            i["Passw"]=b
+            l[d]=i
+            break
+        else:
+            print("Please try again!!")         #func chage password end
 print("Welcome to xyz")
 while True :
-    print()
-    q=input("Do you have an account? ")
-    print()
-    q=q.upper()
-    if q=="Y" or q=="YES":
-        login()
+    while True:
         print()
-    elif q=="N" or q=="NO":
-        print("Lets create your account!!")
+        q=input("Do you have an account? ")
         print()
-        account()
-        print()
+        q=q.upper()
+        if q=="Y" or q=="YES":
+            zz=login()
+            print()
+            if zz==2:
+                break
+        elif q=="N" or q=="NO":
+            print("Lets create your account!!")
+            print()
+            account()
+            print()
+            break
     print("Yoiu entered choice number ",ch)
-    if ch==1:
-        edit(us)
+    while True:
+        if ch==1:
+            edit(us)
+        elif ch==2:
+            biodata(us)
+        elif ch==3:
+            passch(us)
+        elif ch==4:
+            print("Goodbye!!")
+            break
+        ch=menu(us)
     qq=input("*Do you want to continue?* ")
     qq=qq.upper()
     if qq=="Y" or qq=="YES":
