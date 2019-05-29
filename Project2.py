@@ -31,7 +31,13 @@ def account():              #func account
     global us
     e={}
     a=input("Enter Your name: ")
-    b=int(input("Enter your number: "))
+    while True:
+        try:
+            b=int(input("Enter your number: "))
+            break
+        except:
+            print("Please enter a numeric value")
+            continue
     f=input("Enter your mail id-> ")
     while True:
         c=input("Enter userid :")
@@ -81,9 +87,15 @@ def edit(y):                    #func edit
             i["Name"]=c
             l[d]=i
         elif b=="PHONE NUMBER" or b=="NUMBER":
-            c=int(input("Enter new number-> "))
-            i["Number"]=c
-            l[d]=i
+            while True:
+                try:
+                    c=int(input("Enter new number-> "))
+                    i["Number"]=c
+                    l[d]=i
+                    break
+                except:
+                    print("Please enter numeric value")
+                    continue
         elif b=="MAIL" or b=="EMAIL":
             c=input("Enter new mail id-> ")
             i["mail"]=c
